@@ -1,0 +1,10 @@
+[gd_scene load_steps=4 format=3 uid="uid://bcwuy0efx67ly"]
+
+[ext_resource type="Script" path="res://Hand/Hand.cs" id="1_5qrdu"]
+[ext_resource type="PackedScene" uid="uid://b4pwt3gcderjs" path="res://Card/card.tscn" id="2_j0jub"]
+[ext_resource type="Curve" uid="uid://bgfj52hdypkkr" path="res://Hand/xPosCurve.tres" id="3_xmskt"]
+
+[node name="Hand" type="Node2D"]
+script = ExtResource("1_5qrdu")
+_cardScene = ExtResource("2_j0jub")
+XPositionCurve = ExtResource("3_xmskt")

@@ -1,0 +1,16 @@
+[gd_scene load_steps=3 format=3 uid="uid://ce4pxhb3t8ddy"]
+
+[ext_resource type="PackedScene" uid="uid://bcwuy0efx67ly" path="res://Hand/hand.tscn" id="1_2md0e"]
+
+[sub_resource type="Curve" id="Curve_vt8rn"]
+resource_local_to_scene = true
+min_value = -1.0
+_data = [Vector2(0, -1), 0.0, 2.0, 0, 0, Vector2(1, 1), 2.0, 0.0, 1, 0]
+point_count = 2
+
+[node name="Main" type="Node"]
+
+[node name="Hand" parent="." instance=ExtResource("1_2md0e")]
+position = Vector2(602, 361)
+XPositionCurve = SubResource("Curve_vt8rn")
+HandWidth = 50.0
