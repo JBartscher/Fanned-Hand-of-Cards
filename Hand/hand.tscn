@@ -7,4 +7,4 @@
 [node name="Hand" type="Node2D"]
 script = ExtResource("1_5qrdu")
 _cardScene = ExtResource("2_j0jub")
-XPositionCurve = ExtResource("3_xmskt")
+_XPositionCurve = ExtResource("3_xmskt")
