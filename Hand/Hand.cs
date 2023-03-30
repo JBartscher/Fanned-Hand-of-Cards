@@ -1,7 +1,5 @@
 using Godot;
-using System;
 using System.Collections.Generic;
-using System.ComponentModel.DataAnnotations;
 using System.Globalization;
 using System.Linq;
 
@@ -30,13 +28,27 @@ public partial class Hand : Node2D
 
     public readonly List<Card> CardsInHand = new List<Card>();
 
+    
     public override void _Ready()
     {
         base._Ready();
         for (int i = 0; i < 5; i++)
         {
             AddCard();
-            CalculateHandRatio();
+        }
+    }
+    
+    public override void _Input(InputEvent @event)
+    {
+        if (@event.IsActionPressed("ui_accept"))
+        {
+            GD.Print("ui_accept occurred!");
+            AddCard();
+        }
+        if (@event.IsActionPressed("ui_cancel"))
+        {
+            GD.Print("ui_cancel occurred!");
+            RemoveCard();
         }
     }
 
@@ -45,9 +57,18 @@ public partial class Hand : Node2D
         var newCard = _cardScene.Instantiate() as Card;
         this.AddChild(newCard);
         newCard.GlobalPosition = GlobalPosition;
-        GD.Print(newCard.GlobalPosition);
         CardsInHand.Add(newCard);
+        CalculateHandRatio();
     }
+
+    public void RemoveCard()
+    {
+        var cardToRemove = CardsInHand.Last();
+        CardsInHand.Remove(cardToRemove);
+        cardToRemove.QueueFree();
+        CalculateHandRatio();
+    }
+    
 
     private void CalculateHandRatio()
     {
@@ -85,9 +106,5 @@ public partial class Hand : Node2D
            
             GD.Print($"x:{txP} y:{tyP} r:{tr}");
         }
-    }
-
-    private void Foo()
-    {
     }
 }
