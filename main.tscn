@@ -3,7 +3,7 @@
 [ext_resource type="PackedScene" uid="uid://bcwuy0efx67ly" path="res://Hand/hand.tscn" id="1_2md0e"]
 [ext_resource type="Script" path="res://MoveableCamera.cs" id="2_dj5nn"]
 
-[sub_resource type="Curve" id="Curve_pcvlv"]
+[sub_resource type="Curve" id="Curve_4jlny"]
 resource_local_to_scene = true
 min_value = -1.0
 _data = [Vector2(0, -1), 0.0, 2.0, 0, 0, Vector2(1, 1), 2.0, 0.0, 1, 0]
@@ -13,7 +13,7 @@ point_count = 2
 
 [node name="Hand" parent="." instance=ExtResource("1_2md0e")]
 position = Vector2(580, 325)
-_XPositionCurve = SubResource("Curve_pcvlv")
+_XPositionCurve = SubResource("Curve_4jlny")
 
 [node name="Camera2D" type="Camera2D" parent="."]
 position = Vector2(580, 325)

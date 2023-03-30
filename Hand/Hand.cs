@@ -2,6 +2,7 @@ using Godot;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
+using System.Globalization;
 using System.Linq;
 
 public partial class Hand : Node2D
@@ -12,11 +13,22 @@ public partial class Hand : Node2D
     [ExportCategory("X Position")] [Export]
     private Curve _XPositionCurve;
 
-    [Export(PropertyHint.Range, "0,50.0,0.1")]
+    [Export(PropertyHint.Range, "0,500.0,0.1")]
     private float _handWidth = 250.0f;
 
-    public readonly List<Card> CardsInHand = new List<Card>();
+    [ExportCategory("Y Position")] [Export]
+    private Curve _YPositionCurve;
 
+    [Export(PropertyHint.Range, "-50,50.0,0.1")]
+    private float _handHeight = -50.0f;
+
+    [ExportCategory("Card Rotation")] [Export]
+    private Curve _rotationPositionCurve;
+    
+    [Export(PropertyHint.Range, "-50,50.0,0.1")]
+    private float _rotationDegree = -15.0f;
+
+    public readonly List<Card> CardsInHand = new List<Card>();
 
     public override void _Ready()
     {
@@ -43,6 +55,7 @@ public partial class Hand : Node2D
         {
             return;
         }
+
         if (CardsInHand.Count == 1)
         {
             var ratioInHand = 0.5f;
@@ -50,26 +63,27 @@ public partial class Hand : Node2D
             CardsInHand.First().Title.Text = ratioInHand.ToString();
             return;
         }
-        GD.Print("---------------------");
+        GD.Print("------------------");
         
         foreach (var it in CardsInHand.Select((c, i) => new { Card = c, Index = i }))
         {
-            var ratioInHand = (it.Index / (float)(CardsInHand.Count -1));
+            var ratioInHand = (it.Index / (float)(CardsInHand.Count - 1));
             it.Card.Ratio = ratioInHand;
-            it.Card.Title.Text = ratioInHand.ToString();
+            it.Card.Title.Text = ratioInHand.ToString(CultureInfo.InvariantCulture);
 
-            // Vector2 cardPosition = it.Card.GlobalPosition;
-            // GD.Print(cardPosition);
-            // cardPosition.X = cardPosition.X + (_XPositionCurve.Sample(ratioInHand) * _handWidth);
-           
+            var txP = _XPositionCurve.Sample(ratioInHand) * _handWidth;
+            var tyP = _YPositionCurve.Sample(ratioInHand) * _handHeight;
+            var tr = _rotationPositionCurve.Sample(ratioInHand) * _rotationDegree;
 
-            var t = _XPositionCurve.Sample(ratioInHand);
-            var tP = _XPositionCurve.Sample(ratioInHand) * _handWidth;
-           
             var cardPosition = GlobalPosition;
-            cardPosition.X += tP;
-            it.Card.GlobalPosition = cardPosition;
-            GD.Print(t + " " + tP+ " " + cardPosition);
+            // cardPosition.X += txP;
+            // cardPosition.Y += tyP;
+            // it.Card.GlobalPosition = cardPosition;
+            Transform2D rotationTransform = new Transform2D(Mathf.DegToRad(tr), new Vector2( cardPosition.X + txP,  cardPosition.Y + tyP));
+            it.Card.Transform = rotationTransform; //.InterpolateWith(rotationTransform, 15.0f);
+            
+           
+            GD.Print($"x:{txP} y:{tyP} r:{tr}");
         }
     }
 
